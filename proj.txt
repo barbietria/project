@@ -1,0 +1,187 @@
+1. Set up a new Angular project:
+
+bash
+
+ng new your-angular-app
+cd your-angular-app
+2. Install Angular Material:
+
+bash
+ng add @angular/material
+3. Install Chart.js:
+
+bash
+
+npm install chart.js
+4. Create Components:
+
+Create a Login component:
+
+bash
+
+ng generate component login
+Create a Welcome component:
+
+bash
+
+ng generate component welcome
+Create a Dashboard component:
+
+bash
+
+ng generate component dashboard
+5. Update the components with HTML and TS:
+
+login.component.html
+
+html
+
+<!-- login.component.html -->
+<mat-card>
+  <mat-card-title>Login</mat-card-title>
+  <mat-card-content>
+    <!-- Your login form here -->
+    <form>
+      <!-- Input fields for username and password -->
+      <mat-form-field>
+        <input matInput placeholder="Username" [(ngModel)]="username">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+      </mat-form-field>
+      
+      <!-- Login button -->
+      <button mat-raised-button color="primary" (click)="login()">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+login.component.ts
+
+typescript
+
+// login.component.ts
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  username: string = '';
+  password: string = '';
+
+  constructor(private router: Router) {}
+
+  login() {
+    // Add authentication logic here
+    // For simplicity, we'll navigate to the welcome page without actual authentication
+    this.router.navigate(['/welcome']);
+  }
+}
+welcome.component.html
+
+html
+
+<!-- welcome.component.html -->
+<mat-card>
+  <mat-card-title>Welcome to the Application</mat-card-title>
+  <mat-card-content>
+    <p>This is the welcome page of your application.</p>
+  </mat-card-content>
+</mat-card>
+dashboard.component.html
+
+html
+
+<!-- dashboard.component.html -->
+<mat-card>
+  <mat-card-title>Dashboard</mat-card-title>
+  <mat-card-content>
+    <p>Dashboard content goes here.</p>
+
+    <!-- Display an image -->
+    <img src="path/to/your/image.jpg" alt="Dashboard Image" />
+
+    <!-- Display a simple chart using Chart.js -->
+    <canvas id="dashboardChart"></canvas>
+  </mat-card-content>
+</mat-card>
+dashboard.component.ts
+
+typescript
+Copy code
+// dashboard.component.ts
+import { Component, OnInit } from '@angular/core';
+import * as Chart from 'chart.js';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+export class DashboardComponent implements OnInit {
+  ngOnInit() {
+    // Initialize and configure your chart here
+    const ctx = document.getElementById('dashboardChart') as HTMLCanvasElement;
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+          label: 'Sample Data',
+          data: [12, 19, 3, 5, 2, 3, 7],
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+}
+6. Configure Routing:
+
+app-routing.module.ts
+
+typescript
+
+// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'welcome', component: WelcomeComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+7. Add Navigation:
+
+app.component.html
+
+html
+
+<!-- app.component.html -->
+<router-outlet></router-outlet>
+8. Run the Application:
+
+bash
+
+ng serve
